@@ -66,6 +66,7 @@ public class DSS {
 			h += msg.codePointAt(i);
 		}
 		hash = new BigInteger(String.valueOf(h));
+		hash = hash.mod(q);
 		System.out.println("hash = " + hash);
 		return hash;
 	}
