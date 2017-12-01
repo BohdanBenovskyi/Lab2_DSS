@@ -23,6 +23,10 @@ public class DSS {
 		
 		BigInteger m = calcIntHash(msg);
 		
+		int k = rnd.nextInt(q.intValue());
+		System.out.println("k = " + k);
+		calcR(k);
+		
 	}
 	
 	public static void gen_pgq() {
@@ -69,6 +73,15 @@ public class DSS {
 		hash = hash.mod(q);
 		System.out.println("hash = " + hash);
 		return hash;
+	}
+	
+	public static int calcR(int k) {
+		BigInteger tmp1 = g.pow(k);
+		BigInteger tmp2 = tmp1.mod(p);
+		BigInteger tmp3 = tmp2.mod(q);
+		System.out.println("r = " + tmp3);
+		int r  = tmp3.intValue();
+		return r;
 	}
 
 }
