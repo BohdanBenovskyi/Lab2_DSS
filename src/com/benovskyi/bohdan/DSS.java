@@ -30,6 +30,15 @@ public class DSS {
 		
 		int s = calcS(x, r, k, m);
 		
+		if(r == 0 | s == 0) {
+			while(r == 0 || s == 0) {
+				System.out.println("\t\t\tПерегенерація");
+				k = ThreadLocalRandom.current().nextInt(1, q.intValue());
+				r = calcR(k);
+				s = calcS(x, r, k, m);
+			}
+		}
+		
 		System.out.println("Your message: " + msg);
 		System.out.println("\tr: " + r);
 		System.out.println("\ts: " + s);
@@ -87,7 +96,6 @@ public class DSS {
 		BigInteger tmp2 = tmp1.mod(p);
 		BigInteger tmp3 = tmp2.mod(q);
 		int r  = tmp3.intValue();
-		System.out.println("r = " + r);
 		return r;
 	}
 	
@@ -96,7 +104,6 @@ public class DSS {
 		BigInteger tmp2 = new BigInteger(String.valueOf(tmp1));
 		tmp2 = tmp2.mod(q);
 		int s = tmp2.intValue();
-		System.out.println("s = " + s);
 		return s;
 	}
 
