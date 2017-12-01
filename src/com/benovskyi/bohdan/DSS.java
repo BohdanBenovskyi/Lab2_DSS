@@ -1,6 +1,7 @@
 package com.benovskyi.bohdan;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.math.*;
 
 public class DSS {
@@ -16,22 +17,28 @@ public class DSS {
 		
 		gen_pgq();
 		
-		Random rnd = new Random();
-		int x = rnd.nextInt(q.intValue());
+		//int x = rnd.nextInt(q.intValue());
+		int x = ThreadLocalRandom.current().nextInt(1, q.intValue());
 		System.out.println("x = " + x);
 		calc_Y(x);
 		
 		BigInteger m = calcIntHash(msg);
 		
-		int k = rnd.nextInt(q.intValue());
+		int k = ThreadLocalRandom.current().nextInt(1, q.intValue());
 		System.out.println("k = " + k);
-		calcR(k);
+		int r = calcR(k);
+		
+		int s = calcS(x, r, k, m);
+		
+		System.out.println("Your message: " + msg);
+		System.out.println("\tr: " + r);
+		System.out.println("\ts: " + s);
 		
 	}
 	
 	public static void gen_pgq() {
 		Random rnd = new Random();
-		int bitLength = 20;
+		int bitLength = 25;
 		p = BigInteger.probablePrime(bitLength, rnd);
 		g = BigInteger.probablePrime(bitLength, rnd);
 		
@@ -79,9 +86,18 @@ public class DSS {
 		BigInteger tmp1 = g.pow(k);
 		BigInteger tmp2 = tmp1.mod(p);
 		BigInteger tmp3 = tmp2.mod(q);
-		System.out.println("r = " + tmp3);
 		int r  = tmp3.intValue();
+		System.out.println("r = " + r);
 		return r;
+	}
+	
+	public static int calcS(int x, int r, int k, BigInteger m) {
+		int tmp1 = (m.intValue() + (r * x))/k;
+		BigInteger tmp2 = new BigInteger(String.valueOf(tmp1));
+		tmp2 = tmp2.mod(q);
+		int s = tmp2.intValue();
+		System.out.println("s = " + s);
+		return s;
 	}
 
 }
